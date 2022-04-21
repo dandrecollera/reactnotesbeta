@@ -30,15 +30,18 @@ export default function App() {
     const renderNoteScreen = (props: any) => <NoteScreen {...props} user={user} />;
 
     // @ts-ignore
-    if (!user.name) return <Intro onFinish={findUser} />;
+    if (isAppFirstTimeOpen) return <Intro onFinish={findUser} />;
+
+    const navigator = (
+        // @ts-ignore
+        <Stack.Navigator screenOptions={{ headerTitle: "", headerTransparent: true }}>
+            <Stack.Screen component={renderNoteScreen} name="NoteScreen" />
+            <Stack.Screen component={NoteDetail} name="NoteDetail" />
+        </Stack.Navigator>
+    );
     return (
         <NavigationContainer>
-            <NoteProvider>
-                <Stack.Navigator screenOptions={{ headerTitle: "", headerTransparent: true }}>
-                    <Stack.Screen component={renderNoteScreen} name="NoteScreen" />
-                    <Stack.Screen component={NoteDetail} name="NoteDetail" />
-                </Stack.Navigator>
-            </NoteProvider>
+            <NoteProvider>{navigator}</NoteProvider>
         </NavigationContainer>
     );
 }
